@@ -12,4 +12,9 @@ _deps
 
 .vscode
 
-myproj
+simple_example
+*.so
+main
+main_test
+lib/
+build/

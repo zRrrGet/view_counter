@@ -1,8 +1,13 @@
-cmake_minimum_required(VERSION 3.13)
-project(main)
-set(CMAKE_CXX_STANDARD 17)
+include(FetchContent)
+FetchContent_Declare(httplib
+    GIT_REPOSITORY https://github.com/yhirose/cpp-httplib)
+FetchContent_MakeAvailable(httplib)
+
+get_target_property(HTTPLIB_SOURCE_DIR httplib SOURCE_DIR)
+include_directories(${HTTPLIB_SOURCE_DIR})
+
+add_subdirectory(shared)
 
 set(SOURCE_FILES main.cpp)
-
-# Add executable target with source files listed in SOURCE_FILES variable
-add_executable(simple_example ${SOURCE_FILES})
+link_libraries(view_counter)
+add_executable(main ${SOURCE_FILES})

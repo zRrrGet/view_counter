@@ -1,29 +1,18 @@
-#include <stdexcept>
 #include <iostream>
+#include <httplib.h>
+#include <ViewCounter.hpp>
 
-class ClassToTest {
-private:
-    int _x;
-    int _y;
+int main(void)
+{
+  using namespace httplib;
 
-public:
-    ClassToTest(int x, int y) : _x(x), _y(y) {}
+  Server svr;
+  ViewCounter c;
 
-    void setPair(int x, int y) {
-        _x = x;
-        _y = y;
-    }
+  svr.Get("/", [&c](const Request& req, Response& res) {
+    res.set_content(std::to_string(c.get()), "text/plain");
+    c.increment();
+  });
 
-    int divide() {
-        if (_y == 0) {
-            throw std::invalid_argument("zero noooo!!!");
-        }
-        return _x / _y;
-    }
-};
-
-int main() {
-    ClassToTest calc(10, 2);
-    std::cout << calc.divide() << std::endl;
-    return 0;
+  svr.listen("localhost", 1234);
 }
